@@ -1,3 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Renk Paletimiz (60-30-10 Kuralı) */
+  --color-primary: #C64B31;      /* Toprak Kırmızı */
+  --color-secondary: #3D2C1E;    /* Koyu Kahve */
+  --color-base: #FAF8F1;         /* Krem Arka Plan */
+  --color-surface: #EBE0CF;      /* Bej Alanlar */
+  --color-divider: #7A6652;      /* Orta Kahve Çizgiler */
+
+  /* Tipografi */
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: Inter, sans-serif;
+
+  /* Mobil Grid Ölçülerimiz */
+  --spacing-mobile-margin: 24px;
+  --spacing-mobile-gutter: 16px;
+}
