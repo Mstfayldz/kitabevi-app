@@ -1,25 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BookCard from '../components/BookCard';
 
 export default function Favorites() {
   const navigate = useNavigate();
-  const [favoriteBooks, setFavoriteBooks] = useState([]);
+  const [favBooks, setFavBooks] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const allBooks = JSON.parse(localStorage.getItem('books')) || [];
-    const favIds = JSON.parse(localStorage.getItem('favorites')) || [];
-    
-    // Sadece favoriye eklenen ID'lere sahip kitapları filtrele
-    setFavoriteBooks(allBooks.filter(book => favIds.includes(book.id)));
-  }, []);
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) {
+      navigate('/');
+      return;
+    }
+    setCurrentUser(user);
 
-  const removeFavorite = (id) => {
-    let favIds = JSON.parse(localStorage.getItem('favorites')) || [];
-    favIds = favIds.filter(fId => fId !== id);
-    localStorage.setItem('favorites', JSON.stringify(favIds));
+    const favKey = `favorites_${user.email}`; // Kullanıcıya özel kutu
+    const allBooks = JSON.parse(localStorage.getItem('books')) || [];
+    const favIds = JSON.parse(localStorage.getItem(favKey)) || [];
     
-    // Ekrandan da anında sil
-    setFavoriteBooks(favoriteBooks.filter(b => b.id !== id));
+    // Global listeyle ID senkronizasyonu
+    const matched = allBooks.filter(b => favIds.includes(b.id));
+    setFavBooks(matched);
+  }, [navigate]);
+
+  // FAVORİLERDEN ÇIKARMA FONKSİYONU
+  const handleRemoveFavorite = (id) => {
+    if (!currentUser) return;
+    const favKey = `favorites_${currentUser.email}`;
+    let favIds = JSON.parse(localStorage.getItem(favKey)) || [];
+    
+    // ID'yi listeden ayıkla
+    favIds = favIds.filter(fId => fId !== id);
+    localStorage.setItem(favKey, JSON.stringify(favIds));
+    
+    // Ekranda anında güncelle (Sayaç ve grid otomatik düşer)
+    setFavBooks(favBooks.filter(b => b.id !== id));
+  };
+
+  // Favoriler sayfasından da sepete eklenebilsin diye izole fonksiyon
+  const handleAddToCartFromFav = (book) => {
+    if (!currentUser) return;
+    const cartKey = `cart_${currentUser.email}`;
+    const currentCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    currentCart.push(book);
+    localStorage.setItem(cartKey, JSON.stringify(currentCart));
+    alert(`${book.title} sepetinize eklendi!`);
   };
 
   return (
@@ -29,30 +55,28 @@ export default function Favorites() {
         <button onClick={() => navigate('/home')} className="text-primary font-bold hover:underline">← Keşfet'e Dön</button>
       </div>
 
-      {favoriteBooks.length === 0 ? (
-        <div className="text-center py-20 text-slate-400 bg-white rounded-[32px] border border-slate-100">
-          Henüz favorilere eklediğin bir kitap yok.
+      {favBooks.length === 0 ? (
+        <div className="text-center py-20 text-slate-400 bg-white rounded-[32px] border border-slate-100 shadow-sm">
+          Henüz favorilerinize eklediğiniz bir kitap bulunmuyor.
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-          {favoriteBooks.map(book => (
-            <div key={book.id} className="bg-white p-5 rounded-[32px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col group">
-              <div onClick={() => navigate(`/book/${book.id}`)} className="text-[75px] mb-6 mt-2 text-center cursor-pointer group-hover:scale-105 transition-transform duration-300 drop-shadow-sm">
-                {book.image}
-              </div>
-              <h3 className="font-bold text-[#3A332C] text-[15px] truncate">{book.title}</h3>
-              <p className="text-[13px] text-slate-500 mt-1 mb-4">{book.price}</p>
+          {favBooks.map(book => (
+            <div key={book.id} className="relative group">
+              <BookCard 
+                book={book} 
+                isFavorite={true} 
+                onFavorite={handleRemoveFavorite} // Kalbe basınca listeden çıkarır
+                onAddToCart={handleAddToCartFromFav} // Sepete ekleme düğmesi
+              />
               
-              <div className="w-full h-px bg-slate-100 mb-3"></div>
-              
-              <div className="mt-auto flex justify-between items-center">
-                <button onClick={() => navigate(`/book/${book.id}`)} className="text-[12px] font-bold text-primary hover:underline">
-                  İncele
-                </button>
-                <button onClick={() => removeFavorite(book.id)} className="text-[12px] font-bold text-red-500 hover:text-red-600 hover:underline">
-                  Favoriden Çıkar
-                </button>
-              </div>
+              {/* Kartın hemen altına ekstra bir net buton isteyenler için */}
+              <button 
+                onClick={() => handleRemoveFavorite(book.id)}
+                className="w-full mt-2 text-xs font-bold text-red-500 bg-red-50 py-2 rounded-xl border border-transparent hover:border-red-200 transition-all"
+              >
+                Favorilerden Çıkar
+              </button>
             </div>
           ))}
         </div>
