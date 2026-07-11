@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Login from './Pages/Login';
-import Register from './Pages/Register';
-import Home from './Pages/Home';
-import Profile from './Pages/Profile';
-import BookDetail from './Pages/BookDetail';
-import Cart from './Pages/Cart';
-import Checkout from './Pages/Checkout';
-import Favorites from './Pages/Favorites';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import BookDetail from './pages/BookDetail';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import Favorites from './pages/Favorites';
 
 export default function App() {
   return (
