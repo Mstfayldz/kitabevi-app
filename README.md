@@ -1,10 +1,10 @@
-# 📚 Page Nest - Dijital Kitap Evi
+# Page Nest - Dijital Kitap Evi
 
 Page Nest, kullanıcıların kitap keşfedebildiği, favorilerine ekleyebildiği, kendi kitap ilanlarını oluşturup yönetebildiği ve gelişmiş sepet işlemleri yapabildiği modern bir C2C (Kullanıcıdan Kullanıcıya) dijital kitap pazaryeri projesidir. Tasarım süreci Figma ile kurgulanmış, geliştirme aşamasında ise modern React mimarisi ve Tailwind CSS kullanılmıştır.
 
 ---
 
-## 🛠️ Kullanılan Teknolojiler ve Araçlar
+## Kullanılan Teknolojiler ve Araçlar
 
 - **Tasarım & Prototipleme:** Figma
 - **Frontend Kütüphanesi:** React.js (Vite ile modern ve hızlı derleme mimarisi)
@@ -15,7 +15,7 @@ Page Nest, kullanıcıların kitap keşfedebildiği, favorilerine ekleyebildiği
 
 ---
 
-## ✨ Temel Mühendislik ve Tasarım Özellikleri
+## Temel Mühendislik ve Tasarım Özellikleri
 
 - **Kullanıcı Oturum İzolasyonu (Session Isolation):** Sistem, her kullanıcının sepet ve favori verilerini benzersiz e-posta adresine tanımlı özel anahtarlarla (`cart_email` ve `favorites_email`) yönetir. Farklı hesapların verileri asla birbirine karışmaz.
 - **Gelişmiş Veri Senkronizasyonu & Kendi Kendini Onarma (Self-Healing Data):** Global vitrinden silinen bir kitap, tüm kullanıcıların izole sepet ve favori listelerinden eş zamanlı ve otomatik olarak temizlenir. Hayalet verilerin (Ghost Data) oluşması engellenir.
@@ -25,7 +25,7 @@ Page Nest, kullanıcıların kitap keşfedebildiği, favorilerine ekleyebildiği
 
 ---
 
-## 🚶‍♂️ Kullanıcı Akışı (User Flow)
+## Kullanıcı Akışı (User Flow)
 
 Page Nest, kullanıcılarına pürüzsüz ve mantıklı bir alışveriş deneyimi akışı sunar:
 
@@ -52,7 +52,7 @@ Page Nest, kullanıcılarına pürüzsüz ve mantıklı bir alışveriş deneyim
 
 ---
 
-## 📂 Proje Kurulumu ve Çalıştırılması
+## Proje Kurulumu ve Çalıştırılması
 
 Projeyi yerel bilgisayarınızda (localhost) çalıştırmak için aşağıdaki adımları sırasıyla izleyebilirsiniz:
 
